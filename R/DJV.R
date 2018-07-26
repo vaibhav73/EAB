@@ -44,7 +44,7 @@ Correlation_DJV= function(Correlated_variables,data){
 #' @param  data Input dataframe
 #' @return A dataframe
 #' @export
-Binning_DJV=function(data,bin=5,variable=Distance){
+Binning_DJV=function(data,bin,variable){
 
   newd=bin.rpart(formula = Applications ~ variable, data = data,
                  rcontrol = rpart.control(minbucket = .1 * nrow(data)),n.group = bin)
