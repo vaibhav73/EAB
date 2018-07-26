@@ -49,7 +49,7 @@ Binning_DJV=function(data,bin,variable){
   newd=bin.rpart(formula = Applications ~ variable, data = data,
                  rcontrol = rpart.control(minbucket = .1 * nrow(data)),n.group = bin)
 
-  data$Distance=newd$bins
+  data$variable=newd$bins
 
   return(data)
 }
