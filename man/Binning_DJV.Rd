@@ -4,7 +4,7 @@
 \alias{Binning_DJV}
 \title{Loads a dataframe for binning}
 \usage{
-Binning_DJV(data, bin = 5)
+Binning_DJV(data, bin,variable)
 }
 \arguments{
 \item{data}{Input dataframe}
@@ -13,6 +13,6 @@ Binning_DJV(data, bin = 5)
 A dataframe
 }
 \description{
-This function is used for binning 
+This function is used for binning
 Bins the variables and retuns a data frame
 }
