@@ -43,14 +43,41 @@ Correlation_DJV= function(Correlated_variables,data){
 #' @param  data Input dataframe
 #' @return A dataframe
 #' @export
-Binning_DJV=function(data,bin,variable){
+Feeder_High_School_Function= function(Model_data)
+{
+  Selection_Table <- data.frame(Cutoff_Inquiries=numeric(), Cutoff_Submissionrate=numeric(),Information_value=numeric(),Feeder_Percentage=numeric())
+  Model_data$Inquiry=1
+  k=1
+  for(i in 10:25)
+  {
 
-  newd=bin.rpart(formula = Applications ~ variable, data = data,
-                 rcontrol = rpart.control(minbucket = .1 * nrow(data)),n.group = bin)
+    for(j in 15:30)
+    {
 
-  data$variable=newd$bins
+      Feeder_School=summaryBy(Applications+Inquiry~Ceeb.Cd,data = Model_data,FUN = sum)
+      Feeder_School$Submission_Rate= (Feeder_School$Applications.sum/Feeder_School$Inquiry.sum)*100
+      FeederHSInd= ifelse(((Feeder_School$Submission_Rate>i) & (Feeder_School$Inquiry.sum>j)),"FeederHS","Non-FeederHS")
+      Feeder_School$FeederHSInd=FeederHSInd
+      h=summaryBy(Applications.sum+Inquiry.sum ~ FeederHSInd,data = Feeder_School,FUN = sum)
+      Apps_FH=h[1,2]
+      Inq_FH=h[1,3]
+      Apps_NFH=h[2,2]
+      Inq_NFH=h[2,3]
+      Event_FH=h[1,2]/(h[1,2]+h[2,2])
+      NonEvent_FH=h[1,3]/(h[1,3]+h[2,3])
+      Event_NFH=h[2,2]/(h[1,2]+h[2,2])
+      NonEvent_NFH=h[2,3]/(h[1,3]+h[2,3])
+      log(NonEvent_FH/Event_FH)
+      log(NonEvent_NFH/Event_NFH)
+      IV=(log(NonEvent_FH/Event_FH)*(NonEvent_FH-Event_FH))+(log(NonEvent_NFH/Event_NFH)*(NonEvent_NFH-Event_NFH))
+      Feed_Percent=(Inq_FH/(Inq_FH+Inq_NFH))*100
 
-  return(data)
+      Selection_Table[k,]=list(j,i,IV,Feed_Percent)
+      k=k+1
+    }
+
+  }
+  return(Selection_Table)
 }
 
 
