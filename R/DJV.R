@@ -37,7 +37,7 @@ Correlation_DJV= function(Correlated_variables,data){
 
 
 #' Loads a dataframe for binning
-#'
+#'hhh
 #' This function is used for binning
 #' Bins the variables and retuns a data frame
 #'
